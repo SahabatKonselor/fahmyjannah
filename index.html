@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sahabat Konselor - Terhubung ke Google Sheets</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .page-content { display: none; }
+        .page-content.active { display: block; }
+        .nav-link.active { color: white; background-color: #2563eb; }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="flex flex-col min-h-screen">
+        <header class="bg-blue-700 text-white shadow-md sticky top-0 z-50">
+            <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+                <h1 class="text-2xl font-bold">Sahabat Konselor</h1>
+                <nav class="hidden md:flex space-x-2">
+                    <a href="#beranda" class="nav-link active py-2 px-4 rounded-lg hover:bg-blue-600 transition-all font-medium" data-page="beranda">Beranda</a>
+                    <a href="#chat" class="nav-link py-2 px-4 rounded-lg hover:bg-blue-600 transition-all font-medium" data-page="chat">Chat Konselor</a>
+                    <a href="#jadwal" class="nav-link py-2 px-4 rounded-lg hover:bg-blue-600 transition-all font-medium" data-page="jadwal">Jadwal Konseling</a>
+                    <a href="#artikel" class="nav-link py-2 px-4 rounded-lg hover:bg-blue-600 transition-all font-medium" data-page="artikel">Artikel Motivasi</a>
+                    <a href="#lapor" class="nav-link py-2 px-4 rounded-lg hover:bg-blue-600 transition-all font-medium" data-page="lapor">Lapor Masalah</a>
+                </nav>
+                <button id="mobile-menu-button" class="md:hidden p-2 rounded-lg hover:bg-blue-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                    </svg>
+                </button>
+            </div>
+            <div id="mobile-menu" class="hidden md:hidden px-4 pb-4">
+                <nav class="flex flex-col space-y-2">
+                    <a href="#beranda" class="nav-link active py-2 px-4 rounded-lg hover:bg-blue-600 transition-all font-medium" data-page="beranda">Beranda</a>
+                    <a href="#chat" class="nav-link py-2 px-4 rounded-lg hover:bg-blue-600 transition-all font-medium" data-page="chat">Chat Konselor</a>
+                    <a href="#jadwal" class="nav-link py-2 px-4 rounded-lg hover:bg-blue-600 transition-all font-medium" data-page="jadwal">Jadwal Konseling</a>
+                    <a href="#artikel" class="nav-link py-2 px-4 rounded-lg hover:bg-blue-600 transition-all font-medium" data-page="artikel">Artikel Motivasi</a>
+                    <a href="#lapor" class="nav-link py-2 px-4 rounded-lg hover:bg-blue-600 transition-all font-medium" data-page="lapor">Lapor Masalah</a>
+                </nav>
+            </div>
+        </header>
+
+        <main class="container mx-auto p-4 md:p-8 flex-grow">
+
+            <section id="beranda" class="page-content active">
+                <div class="bg-white p-8 rounded-xl shadow-lg text-center">
+                    <h2 class="text-4xl font-bold text-blue-700 mb-4">Selamat Datang di Sahabat Konselor</h2>
+                    <p class="text-lg text-gray-600 mb-8">Kami di sini untuk mendengarkan, mendukung, dan membantumu menemukan solusi. Kamu tidak sendirian.</p>
+                    <img src="https://placehold.co/800x400/3B82F6/FFFFFF?text=Kami+Siap+Mendukungmu" alt="Kami Siap Mendukungmu" class="w-full max-w-2xl mx-auto rounded-lg shadow-md mb-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div class="bg-blue-50 p-6 rounded-lg shadow-md hover:shadow-xl transition-all">
+                            <h3 class="text-xl font-semibold text-blue-800 mb-3">Butuh Bicara?</h3>
+                            <p class="text-gray-600 mb-4">Mulai obrolan anonim dengan konselor kami.</p>
+                            <button class="nav-link-button w-full bg-blue-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-700" data-page="chat">Mulai Chat</button>
+                        </div>
+                        <div class="bg-green-50 p-6 rounded-lg shadow-md hover:shadow-xl transition-all">
+                            <h3 class="text-xl font-semibold text-green-800 mb-3">Atur Janji Temu</h3>
+                            <p class="text-gray-600 mb-4">Buat jadwal konseling tatap muka atau online.</p>
+                            <button class="nav-link-button w-full bg-green-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-green-700" data-page="jadwal">Buat Jadwal</button>
+                        </div>
+                        <div class="bg-yellow-50 p-6 rounded-lg shadow-md hover:shadow-xl transition-all">
+                            <h3 class="text-xl font-semibold text-yellow-800 mb-3">Baca Artikel</h3>
+                            <p class="text-gray-600 mb-4">Dapatkan motivasi dan tips kesehatan mental.</p>
+                            <button class="nav-link-button w-full bg-yellow-500 text-white py-2 px-4 rounded-lg font-medium hover:bg-yellow-600" data-page="artikel">Lihat Artikel</button>
+                        </div>
+                        <div class="bg-red-50 p-6 rounded-lg shadow-md hover:shadow-xl transition-all">
+                            <h3 class="text-xl font-semibold text-red-800 mb-3">Ada Masalah?</h3>
+                            <p class="text-gray-600 mb-4">Laporkan insiden (mis. bullying) secara anonim.</p>
+                            <button class="nav-link-button w-full bg-red-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-red-700" data-page="lapor">Lapor Sekarang</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="chat" class="page-content">
+                <div class="bg-white p-8 rounded-xl shadow-lg max-w-3xl mx-auto">
+                    <h2 class="text-3xl font-bold text-blue-700 mb-6 text-center">Chat dengan Konselor</h2>
+                    <p class="text-gray-600 text-center mb-8">Silahkan Isi form berikut untuk mengirim pesan.</p>
+
+                    <form id="chat-form" class="space-y-6">
+                        <input type="hidden" name="sheet" value="Chat">
+                        <div>
+                            <label for="chat-name" class="block text-sm font-medium text-gray-700">Nama Panggilan (Boleh Anonim)</label>
+                            <input type="text" id="chat-name" name="name" class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-3 focus:ring-blue-500 focus:border-blue-500" placeholder="Nama siswa">
+                        </div>
+                        <div>
+                            <label for="chat-topic" class="block text-sm font-medium text-gray-700">Topik Permasalahan</label>
+                            <select id="chat-topic" name="topic" class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-3 bg-white focus:ring-blue-500 focus:border-blue-500">
+                                <option>Akademik</option>
+                                <option>Keluarga</option>
+                                <option>Perundungan (Bullying)</option>
+                                <option>Percintaan</option>
+                                <option>Lainnya</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="chat-message" class="block text-sm font-medium text-gray-700">Pesan Anda</label>
+                            <textarea id="chat-message" name="message" rows="5" class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-3 focus:ring-blue-500 focus:border-blue-500" placeholder="Ceritakan apa yang kamu rasakan..."></textarea>
+                        </div>
+                        <div class="text-center space-y-2">
+                            <button type="submit" class="w-full md:w-auto bg-blue-600 text-white py-3 px-8 rounded-lg font-semibold hover:bg-blue-700 transition-all text-lg">Kirim Pesan</button>                         
+                            <div id="chat-success" class="hidden mt-4 p-4 rounded-lg bg-green-100 text-green-800 text-center"></div>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <section id="jadwal" class="page-content">
+                <div class="bg-white p-8 rounded-xl shadow-lg max-w-4xl mx-auto">
+                    <h2 class="text-3xl font-bold text-green-700 mb-6 text-center">Buat Janji Temu Konseling</h2>
+                    <p class="text-gray-600 text-center mb-8">Silahkan Isi form berikut untuk mengirim pesan.</p>
+
+                    <div class="flex flex-col md:flex-row gap-8">
+                        <div class="w-full md:w-1/2">
+                            <h3 class="text-xl font-semibold mb-4 text-gray-800">Formulir Pengajuan</h3>
+                            <form id="jadwal-form" class="space-y-4">
+                                <input type="hidden" name="sheet" value="Jadwal">
+                                <div>
+                                    <label for="jadwal-name" class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
+                                    <input type="text" id="jadwal-name" name="name" class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-3 focus:ring-green-500 focus:border-green-500" placeholder="Nama Siswa" required>
+                                </div>
+                                <div>
+                                    <label for="jadwal-kelas" class="block text-sm font-medium text-gray-700">Kelas</label>
+                                    <input type="text" id="jadwal-kelas" name="kelas" class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-3 focus:ring-green-500 focus:border-green-500" placeholder="Contoh: XI IPA 2" required>
+                                </div>
+                                <div>
+                                    <label for="jadwal-konselor" class="block text-sm font-medium text-gray-700">Pilih Konselor</label>
+                                    <select id="jadwal-konselor" name="konselor" class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-3 bg-white focus:ring-green-500 focus:border-green-500">
+                                        <option>Pak Fahmy Zulfikar Ridwan</option>
+                                        <option>Ibu Siti Nurjannah Haryansah Aza</option>
+                                        <option>Siapapun yang tersedia</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="jadwal-datetime" class="block text-sm font-medium text-gray-700">Pilih Tanggal & Waktu</label>
+                                    <input type="datetime-local" id="jadwal-datetime" name="datetime" class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-3 focus:ring-green-500 focus:border-green-500" required>
+                                </div>
+                                <div>
+                                    <label for="jadwal-topik" class="block text-sm font-medium text-gray-700">Topik Singkat</label>
+                                    <input type="text" id="jadwal-topik" name="topik" class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-3 focus:ring-green-500 focus:border-green-500" placeholder="Cth: Kesulitan belajar, masalah teman">
+                                </div>
+                                <div class="text-center">
+                                    <button type="submit" class="w-full bg-green-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-700 transition-all text-lg">Ajukan Jadwal</button>
+                                </div>
+                                <div class="text-center mt-3">
+                                    <div id="jadwal-success" class="hidden mt-4 p-4 rounded-lg bg-green-100 text-green-800 text-center"></div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="w-full md:w-1/2">
+                            <h3 class="text-xl font-semibold mb-4 text-gray-800">Jadwal Ketersediaan Konselor</h3>
+                            <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                                <div class="mb-4">
+                                    <h4 class="font-semibold text-gray-700">Pak Fahmy Zulfikar Ridwan</h4>
+                                    <p class="text-sm text-gray-600">Senin, Rabu, Jumat (08.00 - 15.00)</p>
+                                </div>
+                                <div class="mb-4">
+                                    <h4 class="font-semibold text-gray-700">Ibu Siti Nurjannah Haryansah Aza</h4>
+                                    <p class="text-sm text-gray-600">Selasa, Kamis (08.00 - 15.00)</p>
+                                </div>
+                                <hr class="my-4">
+                                <p class="text-sm text-gray-600"><strong>Catatan:</strong> Jadwal dapat berubah. Harap buat janji temu terlebih dahulu untuk memastikan ketersediaan.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="artikel" class="page-content">
+                <div class="bg-white p-8 rounded-xl shadow-lg">
+                    <h2 class="text-3xl font-bold text-yellow-700 mb-8 text-center">Artikel Motivasi & Kesehatan Mental</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-xl transition-all">
+                            <img src="https://placehold.co/600x400/F59E0B/FFFFFF?text=Tips+Anti+Stres" alt="Gambar artikel" class="w-full h-48 object-cover">
+                            <div class="p-6">
+                                <h3 class="text-xl font-semibold text-gray-800 mb-3">5 Tips Jitu Mengatasi Stres Jelang Ujian</h3>
+                                <p class="text-gray-600 mb-4">Ujian seringkali bikin cemas. Yuk, simak cara mudah untuk tetap tenang dan fokus...</p>
+                                <a href="#" class="font-medium text-yellow-600 hover:text-yellow-700">Baca Selengkapnya &rarr;</a>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-xl transition-all">
+                            <img src="https://placehold.co/600x400/10B981/FFFFFF?text=Kekuatan+Mendengar" alt="Gambar artikel" class="w-full h-48 object-cover">
+                            <div class="p-6">
+                                <h3 class="text-xl font-semibold text-gray-800 mb-3">Kekuatan Mendengar: Cara Menjadi Teman yang Baik</h3>
+                                <p class="text-gray-600 mb-4">Kadang, yang dibutuhkan temanmu hanyalah didengarkan. Pelajari seni mendengar aktif...</p>
+                                <a href="#" class="font-medium text-green-600 hover:text-green-700">Baca Selengkapnya &rarr;</a>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-xl transition-all">
+                            <img src="https://placehold.co/600x400/8B5CF6/FFFFFF?text=Mengenal+Diri" alt="Gambar artikel" class="w-full h-48 object-cover">
+                            <div class="p-6">
+                                <h3 class="text-xl font-semibold text-gray-800 mb-3">Mengenal Diri Sendiri: Awal dari Kebahagiaan</h3>
+                                <p class="text-gray-600 mb-4">Apa passion-mu? Apa kelebihan dan kekuranganmu? Kenali dirimu lebih dalam...</p>
+                                <a href="#" class="font-medium text-purple-600 hover:text-purple-700">Baca Selengkapnya &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="lapor" class="page-content">
+                <div class="bg-white p-8 rounded-xl shadow-lg max-w-3xl mx-auto">
+                    <h2 class="text-3xl font-bold text-red-700 mb-4 text-center">Lapor Masalah (Aman & Rahasia)</h2>
+                    <p class="text-gray-600 text-center mb-8">Laporkan insiden secara anonim. Form akan mengirim ke Google Sheets.</p>
+
+                    <form id="lapor-form" class="space-y-6">
+                        <input type="hidden" name="sheet" value="Lapor">
+                        <div>
+                            <label for="lapor-jenis" class="block text-sm font-medium text-gray-700">Jenis Laporan</label>
+                            <select id="lapor-jenis" name="jenis" class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-3 bg-white focus:ring-red-500 focus:border-red-500" required>
+                                <option value="">-- Pilih Jenis Masalah --</option>
+                                <option>Perundungan (Bullying) Fisik</option>
+                                <option>Perundungan (Bullying) Verbal</option>
+                                <option>Perundungan (Bullying) Cyber</option>
+                                <option>Pelecehan Seksual</option>
+                                <option>Tekanan Akademik Berlebih</option>
+                                <option>Masalah Fasilitas Sekolah</option>
+                                <option>Lainnya</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="lapor-deskripsi" class="block text-sm font-medium text-gray-700">Deskripsi Kejadian</label>
+                            <textarea id="lapor-deskripsi" name="deskripsi" rows="6" class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-3 focus:ring-red-500 focus:border-red-500" placeholder="Jelaskan apa yang terjadi..." required></textarea>
+                        </div>
+                        <div class="text-center space-y-2">
+                            <button type="submit" class="w-full md:w-auto bg-red-600 text-white py-3 px-8 rounded-lg font-semibold hover:bg-red-700 transition-all text-lg">Kirim Laporan Rahasia</button>
+                            <div id="lapor-success" class="hidden mt-4 p-4 rounded-lg bg-green-100 text-green-800 text-center"></div>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+        </main>
+
+        <footer class="bg-gray-800 text-gray-300 mt-12 py-8">
+            <div class="container mx-auto px-4 text-center">
+                <p>&copy; 2025 Sahabat Konselor. Dibuat untuk mendukung kesehatan mental siswa.</p>
+            </div>
+        </footer>
+    </div>
+
+<script>
+/*
+  PENTING:
+  - SCRIPT_URL sudah diisi berdasarkan Apps Script yang kamu kirim.
+*/
+
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwJ5sDSOJoxpAxKbc_8mH8poYUAsBvL6PlNIgikGkWapXO3zWkyxZBIyL5aPY8NAj5J/exec";
+
+document.addEventListener('DOMContentLoaded', function() {
+    const navLinks = document.querySelectorAll('.nav-link');
+    const navLinkButtons = document.querySelectorAll('.nav-link-button');
+    const pages = document.querySelectorAll('.page-content');
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    function showPage(pageId) {
+        pages.forEach(page => page.classList.remove('active'));
+        const activePage = document.getElementById(pageId);
+        if (activePage) activePage.classList.add('active');
+        navLinks.forEach(link => {
+            if (link.dataset.page === pageId) link.classList.add('active');
+            else link.classList.remove('active');
+        });
+        mobileMenu.classList.add('hidden');
+    }
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', function(e){
+            e.preventDefault();
+            showPage(this.dataset.page);
+            window.location.hash = this.dataset.page;
+        });
+    });
+
+    navLinkButtons.forEach(button => {
+        button.addEventListener('click', function(e){
+            e.preventDefault();
+            const pageId = this.dataset.page;
+            showPage(pageId);
+            window.location.hash = pageId;
+            window.scrollTo(0,0);
+        });
+    });
+
+    mobileMenuButton.addEventListener('click', function(){ mobileMenu.classList.toggle('hidden'); });
+
+    const initialPage = window.location.hash.substring(1) || 'beranda';
+    showPage(initialPage);
+
+    // Helper untuk submit form via fetch ke Apps Script
+    async function submitToScript(formEl, successEl, sheetName) {
+        const btn = formEl.querySelector('button[type="submit"]');
+        btn.disabled = true;
+        const formData = new FormData(formEl);
+        formData.set('sheet', sheetName);
+
+        try {
+            const resp = await fetch(SCRIPT_URL, {
+                method: 'POST',
+                body: formData,
+            });
+            // apps script returns JSON; try parse
+            const txt = await resp.text();
+            let ok = resp.ok;
+            try { JSON.parse(txt); } catch(e){ /* ignore */ }
+
+            if (ok) {
+                successEl.textContent = "✅ Pesan berhasil dikirim! Halaman akan dimuat ulang...";
+                successEl.classList.remove('hidden');
+                formEl.reset();
+                setTimeout(()=> location.reload(), 1400);
+            } else {
+                successEl.textContent = "⚠️ Terjadi masalah saat mengirim. Coba lagi.";
+                successEl.classList.remove('hidden');
+                setTimeout(()=> successEl.classList.add('hidden'), 5000);
+            }
+        } catch (err) {
+            console.error(err);
+            successEl.textContent = "⚠️ Tidak bisa terhubung ke server. Periksa SCRIPT_URL dan izin Web App.";
+            successEl.classList.remove('hidden');
+            setTimeout(()=> successEl.classList.add('hidden'), 7000);
+        } finally {
+            btn.disabled = false;
+        }
+    }
+
+    // Chat form
+    const chatForm = document.getElementById('chat-form');
+    if (chatForm) {
+        chatForm.addEventListener('submit', function(e){
+            e.preventDefault();
+            const success = document.getElementById('chat-success');
+            submitToScript(chatForm, success, 'Chat');
+        });
+    }
+
+    // Jadwal form
+    const jadwalForm = document.getElementById('jadwal-form');
+    if (jadwalForm) {
+        jadwalForm.addEventListener('submit', function(e){
+            e.preventDefault();
+            const success = document.getElementById('jadwal-success');
+            submitToScript(jadwalForm, success, 'Jadwal');
+        });
+    }
+
+    // Lapor form
+    const laporForm = document.getElementById('lapor-form');
+    if (laporForm) {
+        laporForm.addEventListener('submit', function(e){
+            e.preventDefault();
+            const success = document.getElementById('lapor-success');
+            submitToScript(laporForm, success, 'Lapor');
+        });
+    }
+
+    // Bagian "Lihat data buttons" dan fungsi openSheetOrAlert() sudah dihapus.
+
+});
+</script>
+
+</body>
+</html>
